@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Attribute } from '../../Components';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import { Attribute, LoadingIndicator } from '../../Components';
 
 export const Tests = () => {
   const [attributes, setAttributes] = useState([]);
@@ -32,9 +31,14 @@ export const Tests = () => {
 
   return (
     <>
-      {isLoading && <CircularProgress />}
-      {attributes.length > 0 &&
-        attributes.map(attribute => <Attribute />)
+      {isLoading
+        ? <LoadingIndicator />
+        : attributes.length > 0 &&
+        attributes.map(attribute => 
+          <Attribute
+            key={attribute.id}
+            attributeData={attribute}
+            tests={tests}/>)
       }
     </>
   )

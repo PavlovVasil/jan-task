@@ -20,15 +20,14 @@ app.get('/attributes', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/attributes.json`);
 
   // imitate some latency
-  setTimeout(() => res.json(JSON.parse(data)), 500);
-  //res.json(JSON.parse(data));
+  setTimeout(() => res.json(JSON.parse(data)), 700);
 });
 
 // GET tests
 app.get('/tests', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/tests.json`);
   // imitate some latency
-  setTimeout(() => res.json(JSON.parse(data)), 500);
+  setTimeout(() => res.json(JSON.parse(data)), 700);
 });
 
 // Mock some CRUD operations
