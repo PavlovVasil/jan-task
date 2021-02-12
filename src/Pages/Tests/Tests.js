@@ -5,6 +5,7 @@ export const Tests = () => {
     const [attributes, setAttributes] = useState([])
     const [tests, setTests] = useState([])
 
+    // Fetch initial component data
     useEffect(() => {
         (async() => {
             try {
@@ -14,8 +15,8 @@ export const Tests = () => {
               ];
               const allRequests = urls.map(url => fetch(url).then(res => res.json()));
               const [
-                attributes,
-                tests
+                { attributes },
+                { tests }
               ] = await Promise.all(allRequests);
 
               setAttributes(attributes);
@@ -26,5 +27,11 @@ export const Tests = () => {
         })()
     }, [])
     
-    return <Test />
+    return (
+      <>
+      {tests.length > 0 &&
+        tests.map(test => <Test />)
+      }
+      </>
+    )
 }

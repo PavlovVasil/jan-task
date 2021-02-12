@@ -1,10 +1,12 @@
 const express = require('express');
 const app = express();
+const cors = require('cors');
 const fs = require('fs').promises;
 const port = 3001;
 var bodyParser = require('body-parser')
 
 app.use(bodyParser.json());
+app.use(cors());
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
@@ -16,15 +18,13 @@ const dataDir = `${__dirname}/data`;
 // GET attributes
 app.get('/attributes', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/attributes.json`);
-  const companies = JSON.parse(data);
-  res.json({ companies });
+  res.json(JSON.parse(data));
 });
 
 // GET tests
 app.get('/tests', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/tests.json`);
-  const addresses = JSON.parse(data);
-  res.json({ addresses });
+  res.json(JSON.parse(data));
 });
 
 // Mock some CRUD operations
