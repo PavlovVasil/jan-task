@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Test } from '../../Components/Tests'
+import { Test } from '../../Components/Tests';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 export const Tests = () => {
-    const [attributes, setAttributes] = useState([])
-    const [tests, setTests] = useState([])
+    const [attributes, setAttributes] = useState([]);
+    const [tests, setTests] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
 
     // Fetch initial component data
     useEffect(() => {
@@ -21,6 +23,7 @@ export const Tests = () => {
 
               setAttributes(attributes);
               setTests(tests);
+              setIsLoading(false)
             } catch (e) {
                 console.log(e)
             }
@@ -29,6 +32,7 @@ export const Tests = () => {
     
     return (
       <>
+      {isLoading && <CircularProgress />}
       {tests.length > 0 &&
         tests.map(test => <Test />)
       }

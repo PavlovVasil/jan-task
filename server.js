@@ -18,13 +18,17 @@ const dataDir = `${__dirname}/data`;
 // GET attributes
 app.get('/attributes', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/attributes.json`);
-  res.json(JSON.parse(data));
+
+  // imitate some latency
+  setTimeout(() => res.json(JSON.parse(data)), 500);
+  //res.json(JSON.parse(data));
 });
 
 // GET tests
 app.get('/tests', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/tests.json`);
-  res.json(JSON.parse(data));
+  // imitate some latency
+  setTimeout(() => res.json(JSON.parse(data)), 500);
 });
 
 // Mock some CRUD operations
