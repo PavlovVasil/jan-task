@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const fs = require('fs').promises;
-const port = process.env.PORT || 3001;
+const port = 3001;
 var bodyParser = require('body-parser')
 
 app.use(bodyParser.json());
@@ -13,14 +13,14 @@ const dataDir = `${__dirname}/data`;
 
 // Endpoints:
 
-// GET companies route
+// GET attributes
 app.get('/attributes', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/attributes.json`);
   const companies = JSON.parse(data);
   res.json({ companies });
 });
 
-// GET companies' addresses
+// GET tests
 app.get('/tests', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/tests.json`);
   const addresses = JSON.parse(data);
