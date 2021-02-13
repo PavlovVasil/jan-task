@@ -9,9 +9,13 @@ export const useCardStyles = makeStyles((theme) => ({
     height: 0,
     paddingTop: '56.25%', // 16:9
   },
-  titleContainer: {
+  textContainer: {
     display: 'flex',
-    justifyContent: 'flex-start',
-    alignItems: 'center'
+    flexDirection: 'column',
+    alignItems: 'flex-start'
+  },
+  descriptionContainer: {
+    marginTop: '16px',
+    marginBottom: '16px'
   }
 }));

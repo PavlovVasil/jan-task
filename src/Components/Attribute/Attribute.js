@@ -7,7 +7,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import FavoriteIcon from '@material-ui/icons/Favorite';
 import ShareIcon from '@material-ui/icons/Share';
-import { useCardStyles } from './styles'
+import { Test } from '../index'
+import { useCardStyles } from './styles';
+import PropTypes from 'prop-types'
 
 export const Attribute = ({ attributeData, tests }) => {
   const classes = useCardStyles();
@@ -15,25 +17,41 @@ export const Attribute = ({ attributeData, tests }) => {
   return (
     <Card className={classes.root}>
       <CardContent>
-        <div className={classes.titleContainer}>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
+        <div className={classes.textContainer}>
+          <div>
+            <IconButton aria-label="add to favorites">
+              <FavoriteIcon />
+            </IconButton>
             Теsts
+          </div>
+          <div className={clsx(classes.descriptionContainer, classes.textContainer)}>
+            <div>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {attributeData.name}
+              </Typography>
             </div>
-        <Typography variant="body2" color="textSecondary" component="p">
-          This impressive paella is a perfect party dish and a fun meal to cook together with your
-          guests. Add 1 cup of frozen peas along with the mussels, if you like.
-          </Typography>
+            <div>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {attributeData.description}
+              </Typography>
+            </div>
+          </div>
+          <Test />
+        </div>
       </CardContent>
-      <CardActions disableSpacing>
+      {/* <CardActions disableSpacing>
         <IconButton aria-label="add to favorites">
           <FavoriteIcon />
         </IconButton>
         <IconButton aria-label="share">
           <ShareIcon />
         </IconButton>
-      </CardActions>
+      </CardActions> */}
     </Card>
   )
+}
+
+Attribute.propTypes = {
+  attributeData: PropTypes.object.isRequired,
+  tests: PropTypes.arrayOf(PropTypes.object)
 }

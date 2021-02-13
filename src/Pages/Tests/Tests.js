@@ -34,11 +34,11 @@ export const Tests = () => {
       {isLoading
         ? <LoadingIndicator />
         : attributes.length > 0 &&
-        attributes.map(attribute => 
+        attributes.map(attribute =>
           <Attribute
             key={attribute.id}
             attributeData={attribute}
-            tests={tests}/>)
+            tests={tests} />)
       }
     </>
   )
