@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import WarningIcon from '@material-ui/icons/Warning';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import { useAccordionStyles } from './style'
+import { useAccordionStyles } from './style';
 
 const GreenCheckbox = withStyles({
     root: {
@@ -19,7 +19,7 @@ const GreenCheckbox = withStyles({
     checked: {},
   })((props) => <Checkbox color="default" {...props} />);
 
-export const Test = ({ config, onToggleTest }) => {
+export const Test = ({ config, onToggleTest, renderTestConfig }) => {
     const classes = useAccordionStyles();
 
     return (
@@ -44,9 +44,10 @@ export const Test = ({ config, onToggleTest }) => {
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography className={classes.body1} color="textSecondary">
+                    {/* <Typography className={classes.body1} color="textSecondary">
                         {config.name}
-                    </Typography>
+                    </Typography> */}
+                   {renderTestConfig(config)}
                 </AccordionDetails>
             </Accordion>
         </div>

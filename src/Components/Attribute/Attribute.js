@@ -4,6 +4,10 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import InputLabel from '@material-ui/core/InputLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 import { Test } from '../index'
 import { useCardStyles } from './styles';
 import PropTypes from 'prop-types';
@@ -44,6 +48,29 @@ export const Attribute = ({ attributeData, tests }) => {
     }
   });
 
+  const renderTestConfig = (config) => {
+    return (
+      <FormControl variant="outlined">
+        <InputLabel htmlFor="outlined-age-native-simple">Age</InputLabel>
+        <Select
+          native
+          value={config.level}
+          //onChange={handleChange}
+          label="Age"
+          inputProps={{
+            name: 'age',
+            id: 'outlined-age-native-simple',
+          }}
+        >
+          <option aria-label="None" value="" />
+          <option value={10}>Ten</option>
+          <option value={20}>Twenty</option>
+          <option value={30}>Thirty</option>
+        </Select>
+      </FormControl>
+    )
+  }
+
   const [testsState, setTestsState] = useState(configuredTests);
 
   const setTestEnabled = (e, seq) => {
@@ -75,6 +102,7 @@ export const Attribute = ({ attributeData, tests }) => {
                 onToggleTest={e => setTestEnabled(e, test.seq)}
                 config={test}
                 key={test.seq}
+                renderTestConfig={renderTestConfig}
               />
             )}
         </div>
