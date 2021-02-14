@@ -43,6 +43,7 @@ export const Attribute = ({ attributeData, tests }) => {
       configuredTests.push(newConfiguredTest)
     }
   });
+
   const [testsState, setTestsState] = useState(configuredTests);
 
   const setTestEnabled = (e, seq) => {
@@ -70,7 +71,11 @@ export const Attribute = ({ attributeData, tests }) => {
           </div>
           {/* Filter only the tests for this specific attribute */}
           {testsState.map(test => 
-              <Test onToggleTest={e => setTestEnabled(e, test.seq)} config={test} key={test.seq}/>
+              <Test
+                onToggleTest={e => setTestEnabled(e, test.seq)}
+                config={test}
+                key={test.seq}
+              />
             )}
         </div>
       </CardContent>
