@@ -30,7 +30,7 @@ export const Tests = () => {
   }, [])
 
   return (
-    <>
+    <div style={{display: 'flex', height: '100vh'}}>
       {isLoading
         ? <LoadingIndicator />
         : attributes.length > 0 &&
@@ -40,6 +40,6 @@ export const Tests = () => {
             attributeData={attribute}
             tests={tests} />)
       }
-    </>
+    </div>
   )
 }

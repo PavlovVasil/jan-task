@@ -3,7 +3,6 @@ import { withStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
-import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import WarningIcon from '@material-ui/icons/Warning';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -44,9 +43,6 @@ export const Test = ({ config, onToggleTest, renderTestConfig }) => {
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
-                    {/* <Typography className={classes.body1} color="textSecondary">
-                        {config.name}
-                    </Typography> */}
                    {renderTestConfig(config)}
                 </AccordionDetails>
             </Accordion>

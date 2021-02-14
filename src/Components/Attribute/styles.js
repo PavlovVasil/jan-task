@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 export const useCardStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 345,
+    width: 345,
     margin: '16px auto',
     position: 'relative',
     '-webkit-box-shadow': '-3px 3px 7px 0px rgba(0,0,0,0.28)',
