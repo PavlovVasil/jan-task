@@ -12,7 +12,7 @@ export const useCardStyles = makeStyles((theme) => ({
     '&::before': {
       content: '""',
       width: '100%',
-      background: '#30405e',
+      background: '#2254ae',
       height: '3px',
       position: 'absolute',
       top: '0px',
