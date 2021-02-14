@@ -1,4 +1,5 @@
 import React from 'react';
+import { withStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -8,6 +9,15 @@ import WarningIcon from '@material-ui/icons/Warning';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useAccordionStyles } from './style'
+
+const GreenCheckbox = withStyles({
+    root: {
+      '&$checked': {
+        color: "#48cfad",
+      },
+    },
+    checked: {},
+  })((props) => <Checkbox color="default" {...props} />);
 
 export const Test = ({ config, onToggleTest }) => {
     const classes = useAccordionStyles();
@@ -25,7 +35,7 @@ export const Test = ({ config, onToggleTest }) => {
                         aria-label="Acknowledge"
                         onClick={e => onToggleTest(e)}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<Checkbox checked={config.enabled} />}
+                        control={<GreenCheckbox checked={config.enabled} />}
                         label={config.name}
                         className={classes.formControlContainer}
                     />
@@ -39,7 +49,6 @@ export const Test = ({ config, onToggleTest }) => {
                     </Typography>
                 </AccordionDetails>
             </Accordion>
-
         </div>
     )
 }
