@@ -38,5 +38,20 @@ export const useCardStyles = makeStyles((theme) => ({
   descriptionContainer: {
     marginTop: '16px',
     marginBottom: '16px'
-  }
+  },
+  menuItemContent: {
+    display: 'flex',
+    alignItems: 'center',
+    margin: '0px 8px 0px 0px',
+    color: 'rgba(0, 0, 0, 0.54)',
+    '& svg': {
+      marginRight: '12px'
+    }
+  },
+  warning: {
+    color: '#ffda6b'
+  },
+  critical: {
+      color: '#ff939a'
+  },
 }));

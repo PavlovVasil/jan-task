@@ -1,12 +1,16 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import WarningIcon from '@material-ui/icons/Warning';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import FormControl from '@material-ui/core/FormControl';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';
 import { Test } from '../index'
 import { useCardStyles } from './styles';
@@ -15,11 +19,11 @@ import PropTypes from 'prop-types';
 export const Attribute = ({ attributeData, tests }) => {
   const classes = useCardStyles();
 
-  const possibleTests = tests.filter(test => 
+  const possibleTests = tests.filter(test =>
     test.typecastScope.includes(attributeData.typecast));
 
   const configuredTests = attributeData.channels[0].tests.map(test => {
-    const details =  possibleTests.filter(testDetails => 
+    const details = possibleTests.filter(testDetails =>
       testDetails.code === test.code)[0]
     return {
       ...test,
@@ -28,7 +32,7 @@ export const Attribute = ({ attributeData, tests }) => {
       description: details.description,
       expanded: false
     }
-    });
+  });
 
   possibleTests.forEach(possibleTest => {
     if (configuredTests.filter(test => test.code === possibleTest.code).length === 0) {
@@ -42,7 +46,7 @@ export const Attribute = ({ attributeData, tests }) => {
         expanded: false,
         seq: configuredTests === []
           ? 1
-          :configuredTests[configuredTests.length - 1].seq + 1
+          : configuredTests[configuredTests.length - 1].seq + 1
       }
       configuredTests.push(newConfiguredTest)
     }
@@ -50,22 +54,25 @@ export const Attribute = ({ attributeData, tests }) => {
 
   const renderTestConfig = (config) => {
     return (
-      <FormControl variant="outlined">
-        <InputLabel htmlFor="outlined-age-native-simple">Age</InputLabel>
+      <FormControl variant="outlined" size="small">
+        <InputLabel id="outlined-level-native-simple">Level</InputLabel>
         <Select
-          native
+          labelId="outlined-level-native-simple"
           value={config.level}
-          //onChange={handleChange}
-          label="Age"
-          inputProps={{
-            name: 'age',
-            id: 'outlined-age-native-simple',
-          }}
+        //onChange={handleChange}
         >
-          <option aria-label="None" value="" />
-          <option value={10}>Ten</option>
-          <option value={20}>Twenty</option>
-          <option value={30}>Thirty</option>
+          <MenuItem value='warning'>
+            <div className={classes.menuItemContent}>
+              <WarningIcon className={classes.warning} />
+              <span>Warning</span>
+            </div>
+          </MenuItem>
+          <MenuItem value='critical'>
+            <div className={classes.menuItemContent}>
+            <WarningIcon className={classes.critical} />
+            <span>Critical</span>
+          </div>
+          </MenuItem>
         </Select>
       </FormControl>
     )
@@ -97,14 +104,14 @@ export const Attribute = ({ attributeData, tests }) => {
             </div>
           </div>
           {/* Filter only the tests for this specific attribute */}
-          {testsState.map(test => 
-              <Test
-                onToggleTest={e => setTestEnabled(e, test.seq)}
-                config={test}
-                key={test.seq}
-                renderTestConfig={renderTestConfig}
-              />
-            )}
+          {testsState.map(test =>
+            <Test
+              onToggleTest={e => setTestEnabled(e, test.seq)}
+              config={test}
+              key={test.seq}
+              renderTestConfig={renderTestConfig}
+            />
+          )}
         </div>
       </CardContent>
     </Card>
