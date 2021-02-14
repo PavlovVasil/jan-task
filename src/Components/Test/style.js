@@ -6,6 +6,11 @@ export const useAccordionStyles = makeStyles({
     },
     formControlContainer: {
         width: '100%',
+        '& > span': {
+            fontSize: '18px',
+            fontWeight: 500,
+            color: '#3e4345'
+        }
     },
     warningIconContainer: {
         display: 'flex',
@@ -16,5 +21,5 @@ export const useAccordionStyles = makeStyles({
     },
     critical: {
         color: '#ff939a'
-    }
+    },
 });

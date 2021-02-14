@@ -44,7 +44,7 @@ export const Test = ({ config, onToggleTest }) => {
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
-                    <Typography color="textSecondary">
+                    <Typography className={classes.body1} color="textSecondary">
                         {config.name}
                     </Typography>
                 </AccordionDetails>
