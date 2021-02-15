@@ -24,6 +24,7 @@ export const Attribute = ({ attributeData, tests }) => {
       testDetails.code === test.code)[0]
     return {
       ...test,
+      id: details.id,
       enabled: true,
       name: details.name,
       description: details.description,
@@ -34,6 +35,7 @@ export const Attribute = ({ attributeData, tests }) => {
   possibleTests.forEach(possibleTest => {
     if (configuredTests.filter(test => test.code === possibleTest.code).length === 0) {
       const newConfiguredTest = {
+        id: possibleTest.id,
         code: possibleTest.code,
         level: possibleTest.defaultLevel,
         params: [],
@@ -41,9 +43,7 @@ export const Attribute = ({ attributeData, tests }) => {
         name: possibleTest.name,
         description: possibleTest.description,
         expanded: false,
-        seq: configuredTests === []
-          ? 1
-          : configuredTests[configuredTests.length - 1].seq + 1
+        seq: null
       }
       configuredTests.push(newConfiguredTest)
     }
@@ -51,16 +51,19 @@ export const Attribute = ({ attributeData, tests }) => {
 
   const [testsState, setTestsState] = useState(configuredTests);
 
-  console.log(testsState)
-  const setTestEnabled = (e, seq) => {
+  const toggleTestEnabled = (e, testName) => {
     e.stopPropagation();
-    debugger
+    const newTestsState = [...testsState]
+    const index =  newTestsState.findIndex(element => element.name === testName)
+    newTestsState[index].enabled = !newTestsState[index].enabled;
+    // send new test to server
+    setTestsState(newTestsState);
   }
 
-  const handleChange = (event, testDetails) => {
+  const handleChange = (event, testName) => {
     const newValue = event.target.value;
     const newTestsState = [...testsState]
-    const index =  newTestsState.findIndex(element => element.name === testDetails.name)
+    const index =  newTestsState.findIndex(element => element.name === testName)
     newTestsState[index].level = newValue;
     // send new level to server
     setTestsState(newTestsState);
@@ -73,7 +76,7 @@ export const Attribute = ({ attributeData, tests }) => {
         <Select
           labelId="outlined-level-native-simple"
           value={testDetails.level}
-          onChange={event => handleChange(event, testDetails)}
+          onChange={event => handleChange(event, testDetails.name)}
         >
           <MenuItem value='warning'>
             <div className={classes.menuItemContent}>
@@ -91,8 +94,6 @@ export const Attribute = ({ attributeData, tests }) => {
       </FormControl>
     )
   }
-
-
 
   return (
     <Card className={classes.root}>
@@ -115,9 +116,9 @@ export const Attribute = ({ attributeData, tests }) => {
           {/* Filter only the tests for this specific attribute */}
           {testsState.map(test =>
             <Test
-              onToggleTest={e => setTestEnabled(e, test.seq)}
+              onToggleTest={e => toggleTestEnabled(e, test.name)}
               testDetails={test}
-              key={test.seq}
+              key={`${attributeData.id}${test.id}`}
               renderTestConfig={renderTestConfig}
             />
           )}
