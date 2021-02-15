@@ -58,7 +58,13 @@ export const useCardStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     '& > div': {
-      marginBottom: '24px'
+      marginBottom: '24px',
+    }
+  },
+  rangeInputsContainer: {
+    display: 'flex',
+    '& > div': {
+      marginRight: '24px',
     }
   }
 }));

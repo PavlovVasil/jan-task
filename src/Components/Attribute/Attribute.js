@@ -146,7 +146,7 @@ export const Attribute = ({ attributeData, tests }) => {
           />
         }
         {test.name === 'Range' &&
-          <div style={{display: 'flex'}}>
+          <div className={classes.rangeInputsContainer}>
             <TextField
               size="small"
               label="From"
@@ -161,7 +161,10 @@ export const Attribute = ({ attributeData, tests }) => {
               label="To"
               type="number"
               variant="outlined"
-              helperText="Input has to be bigger than From"
+              helperText={test.params[1] &&
+                test.params[1].error &&
+                "Input has to be bigger than From"
+              }
               value={test.params[1] && parseInt(test.params[1].value, 10)}
               onChange={(e) => handleRangeChange(e, "To")}
             />
