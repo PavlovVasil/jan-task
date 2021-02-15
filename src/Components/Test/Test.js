@@ -18,7 +18,7 @@ const GreenCheckbox = withStyles({
     checked: {},
   })((props) => <Checkbox color="default" {...props} />);
 
-export const Test = ({ config, onToggleTest, renderTestConfig }) => {
+export const Test = ({ testDetails, onToggleTest, renderTestConfig }) => {
     const classes = useAccordionStyles();
 
     return (
@@ -34,16 +34,16 @@ export const Test = ({ config, onToggleTest, renderTestConfig }) => {
                         aria-label="Acknowledge"
                         onClick={e => onToggleTest(e)}
                         onFocus={(event) => event.stopPropagation()}
-                        control={<GreenCheckbox checked={config.enabled} />}
-                        label={config.name}
+                        control={<GreenCheckbox checked={testDetails.enabled} />}
+                        label={testDetails.name}
                         className={classes.formControlContainer}
                     />
                     <div className={classes.warningIconContainer}>
-                        <WarningIcon className={classes[config.level]}/>
+                        <WarningIcon className={classes[testDetails.level]}/>
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
-                   {renderTestConfig(config)}
+                   {renderTestConfig(testDetails)}
                 </AccordionDetails>
             </Accordion>
         </div>

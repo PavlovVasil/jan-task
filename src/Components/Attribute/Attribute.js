@@ -49,14 +49,31 @@ export const Attribute = ({ attributeData, tests }) => {
     }
   });
 
-  const renderTestConfig = (config) => {
+  const [testsState, setTestsState] = useState(configuredTests);
+
+  console.log(testsState)
+  const setTestEnabled = (e, seq) => {
+    e.stopPropagation();
+    debugger
+  }
+
+  const handleChange = (event, testDetails) => {
+    const newValue = event.target.value;
+    const newTestsState = [...testsState]
+    const index =  newTestsState.findIndex(element => element.name === testDetails.name)
+    newTestsState[index].level = newValue;
+    // send new level to server
+    setTestsState(newTestsState);
+  }
+
+  const renderTestConfig = (testDetails) => {
     return (
       <FormControl variant="outlined" size="small">
         <InputLabel id="outlined-level-native-simple">Level</InputLabel>
         <Select
           labelId="outlined-level-native-simple"
-          value={config.level}
-        //onChange={handleChange}
+          value={testDetails.level}
+          onChange={event => handleChange(event, testDetails)}
         >
           <MenuItem value='warning'>
             <div className={classes.menuItemContent}>
@@ -75,12 +92,7 @@ export const Attribute = ({ attributeData, tests }) => {
     )
   }
 
-  const [testsState, setTestsState] = useState(configuredTests);
 
-  const setTestEnabled = (e, seq) => {
-    e.stopPropagation();
-    debugger
-  }
 
   return (
     <Card className={classes.root}>
@@ -104,7 +116,7 @@ export const Attribute = ({ attributeData, tests }) => {
           {testsState.map(test =>
             <Test
               onToggleTest={e => setTestEnabled(e, test.seq)}
-              config={test}
+              testDetails={test}
               key={test.seq}
               renderTestConfig={renderTestConfig}
             />
