@@ -8,7 +8,9 @@ import WarningIcon from '@material-ui/icons/Warning';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useAccordionStyles } from './style';
+import PropTypes from 'prop-types'
 
+// Overriding Material UI's ugly pink checkbox :)
 const GreenCheckbox = withStyles({
     root: {
       '&$checked': {
@@ -18,6 +20,8 @@ const GreenCheckbox = withStyles({
     checked: {},
   })((props) => <Checkbox color="default" {...props} />);
 
+
+// This better be kept as a presentational/dumb component
 export const Test = ({ testDetails, onToggleTest, renderTestConfig }) => {
     const classes = useAccordionStyles();
 
@@ -48,4 +52,10 @@ export const Test = ({ testDetails, onToggleTest, renderTestConfig }) => {
             </Accordion>
         </div>
     )
+}
+
+Test.propTypes = {
+    testDetails: PropTypes.object.isRequired,
+    onToggleTest: PropTypes.func.isRequired,
+    renderTestConfig: PropTypes.func.isRequired
 }

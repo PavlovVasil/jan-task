@@ -6,7 +6,7 @@ export const Tests = () => {
   const [tests, setTests] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Fetch initial component data
+  // Fetch initial attrubites data
   useEffect(() => {
     (async () => {
       try {

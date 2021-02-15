@@ -19,6 +19,8 @@ export const Attribute = ({ attributeData, tests }) => {
   const possibleTests = tests.filter(test =>
     test.typecastScope.includes(attributeData.typecast));
 
+  // This keeps the possible tests for this attribute, some of which might
+  // be pre-configured
   const configuredTests = attributeData.channels[0].tests.map(test => {
     const details = possibleTests.filter(testDetails =>
       testDetails.code === test.code)[0]
@@ -51,6 +53,7 @@ export const Attribute = ({ attributeData, tests }) => {
 
   const [testsState, setTestsState] = useState(configuredTests);
 
+  // When a test gets enabled/disabled
   const toggleTestEnabled = (e, testName) => {
     e.stopPropagation();
     const newTestsState = [...testsState]
@@ -60,6 +63,7 @@ export const Attribute = ({ attributeData, tests }) => {
     setTestsState(newTestsState);
   }
 
+  // When the test level changes
   const handleChange = (event, testName) => {
     const newValue = event.target.value;
     const newTestsState = [...testsState]
@@ -69,6 +73,7 @@ export const Attribute = ({ attributeData, tests }) => {
     setTestsState(newTestsState);
   }
 
+  // This renders the different test inputs and dropdows with its options
   const renderTestConfig = (testDetails) => {
     return (
       <FormControl variant="outlined" size="small">
@@ -113,7 +118,6 @@ export const Attribute = ({ attributeData, tests }) => {
               {attributeData.description}
             </div>
           </div>
-          {/* Filter only the tests for this specific attribute */}
           {testsState.map(test =>
             <Test
               onToggleTest={e => toggleTestEnabled(e, test.name)}
