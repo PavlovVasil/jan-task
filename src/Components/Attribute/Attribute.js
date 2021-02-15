@@ -29,6 +29,7 @@ export const Attribute = ({ attributeData, tests }) => {
       ...test,
       id: details.id,
       enabled: true,
+      error: false,
       name: details.name,
       description: details.description,
       expanded: false
@@ -43,6 +44,7 @@ export const Attribute = ({ attributeData, tests }) => {
         level: possibleTest.defaultLevel,
         params: [],
         enabled: false,
+        error: false,
         name: possibleTest.name,
         description: possibleTest.description,
         expanded: false,
@@ -57,8 +59,8 @@ export const Attribute = ({ attributeData, tests }) => {
   // When a test gets enabled/disabled
   const toggleTestEnabled = (e, testName) => {
     e.stopPropagation();
-    const newTestsState = [...testsState]
-    const index =  newTestsState.findIndex(element => element.name === testName)
+    const newTestsState = [...testsState];
+    const index = newTestsState.findIndex(element => element.name === testName);
     newTestsState[index].enabled = !newTestsState[index].enabled;
     // send new test to server
     setTestsState(newTestsState);
@@ -67,62 +69,99 @@ export const Attribute = ({ attributeData, tests }) => {
   // When the test level changes
   const handleLevelChange = (event, testName) => {
     const newValue = event.target.value;
-    const newTestsState = [...testsState]
-    const index =  newTestsState.findIndex(element => element.name === testName)
+    const newTestsState = [...testsState];
+    const index = newTestsState.findIndex(element => element.name === testName);
     newTestsState[index].level = newValue;
     // send new level to server
     setTestsState(newTestsState);
   }
 
   const handleBlacklistChange = (event) => {
-    const newValue = event.target.value.split(', ')
-    const newTestsState = [...testsState]
-    const index =  newTestsState.findIndex(element => element.name === 'Blacklist')
+    const newValue = event.target.value.split(', ');
+    const newTestsState = [...testsState];
+    const index = newTestsState.findIndex(element => element.name === 'Blacklist');
     newTestsState[index].params[0].value = newValue;
+    // send new level to server
+    setTestsState(newTestsState);
+  }
+
+  const handleRangeChange = (event, type) => {
+    const newValue = parseInt(event.target.value, 10);
+    const newTestsState = [...testsState];
+    const index = newTestsState.findIndex(element => element.name === 'Range');
+
+    newTestsState[index].params[type === "From"? 0 : 1].value = newValue;
+    if(type === "To") {
+      const hasError = parseInt(newTestsState[index].params[0].value, 10) > 
+        parseInt(newTestsState[index].params[1].value, 10);        
+      newTestsState[index].params[1].error = hasError;
+    }
+
     // send new level to server
     setTestsState(newTestsState);
   }
 
   // This renders the different test inputs and dropdows with its options
   const renderTestConfig = (test) => {
-    console.log(test)
     return (
       // Render the test's level select
       <div className={classes.testOptionsContainer}>
-      <FormControl variant="outlined" size="small">
-        <InputLabel id="outlined-level-native-simple">Level</InputLabel>
-        <Select
-          labelId="outlined-level-native-simple"
-          value={test.level}
-          onChange={event => handleLevelChange(event, test.name)}
-        >
-          <MenuItem value='warning'>
-            <div className={classes.menuItemContent}>
-              <WarningIcon className={classes.warning} />
-              <span>Warning</span>
-            </div>
-          </MenuItem>
-          <MenuItem value='critical'>
-            <div className={classes.menuItemContent}>
-            <WarningIcon className={classes.critical} />
-            <span>Critical</span>
-          </div>
-          </MenuItem>
-        </Select>
-      </FormControl>
-      {test.name === 'Blacklist'&& 
-              <TextField
-              id="outlined-multiline-static"
-              label="List of words"
-              multiline
-              rows={4}
-              value={test.params[0] &&
-                test.params[0].value.join(', ')
-              }
+        <FormControl variant="outlined" size="small">
+          <InputLabel id="outlined-level-native-simple">Level</InputLabel>
+          <Select
+            labelId="outlined-level-native-simple"
+            value={test.level}
+            onChange={event => handleLevelChange(event, test.name)}
+          >
+            <MenuItem value='warning'>
+              <div className={classes.menuItemContent}>
+                <WarningIcon className={classes.warning} />
+                <span>Warning</span>
+              </div>
+            </MenuItem>
+            <MenuItem value='critical'>
+              <div className={classes.menuItemContent}>
+                <WarningIcon className={classes.critical} />
+                <span>Critical</span>
+              </div>
+            </MenuItem>
+          </Select>
+        </FormControl>
+        {test.name === 'Blacklist' &&
+          <TextField
+            id="outlined-multiline-static"
+            label="List of words"
+            multiline
+            rows={4}
+            value={test.params[0] &&
+              test.params[0].value.join(', ')
+            }
+            variant="outlined"
+            onChange={handleBlacklistChange}
+          />
+        }
+        {test.name === 'Range' &&
+          <div style={{display: 'flex'}}>
+            <TextField
+              size="small"
+              label="From"
+              type="number"
               variant="outlined"
-              onChange={handleBlacklistChange}
-              />
-      }
+              value={test.params[0] && parseInt(test.params[0].value, 10)}
+              onChange={(e) => handleRangeChange(e, "From")}
+            />
+            <TextField
+              error={test.params[1] && test.params[1].error}
+              size="small"
+              label="To"
+              type="number"
+              variant="outlined"
+              helperText="Input has to be bigger than From"
+              value={test.params[1] && parseInt(test.params[1].value, 10)}
+              onChange={(e) => handleRangeChange(e, "To")}
+            />
+          </div>
+        }
       </div>
     )
   }
