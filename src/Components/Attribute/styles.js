@@ -54,4 +54,11 @@ export const useCardStyles = makeStyles((theme) => ({
   critical: {
       color: '#ff939a'
   },
+  testOptionsContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    '& > div': {
+      marginBottom: '24px'
+    }
+  }
 }));

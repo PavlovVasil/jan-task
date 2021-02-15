@@ -47,7 +47,7 @@ export const Test = ({ testDetails, onToggleTest, renderTestConfig }) => {
                     </div>
                 </AccordionSummary>
                 <AccordionDetails>
-                   {renderTestConfig(testDetails)}
+                   {renderTestConfig()}
                 </AccordionDetails>
             </Accordion>
         </div>

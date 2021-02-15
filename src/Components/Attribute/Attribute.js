@@ -7,6 +7,7 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import WarningIcon from '@material-ui/icons/Warning';
 import InputLabel from '@material-ui/core/InputLabel';
 import FormControl from '@material-ui/core/FormControl';
+import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
 import { Test } from '../index'
@@ -64,7 +65,7 @@ export const Attribute = ({ attributeData, tests }) => {
   }
 
   // When the test level changes
-  const handleChange = (event, testName) => {
+  const handleLevelChange = (event, testName) => {
     const newValue = event.target.value;
     const newTestsState = [...testsState]
     const index =  newTestsState.findIndex(element => element.name === testName)
@@ -73,15 +74,27 @@ export const Attribute = ({ attributeData, tests }) => {
     setTestsState(newTestsState);
   }
 
+  const handleBlacklistChange = (event) => {
+    const newValue = event.target.value.split(', ')
+    const newTestsState = [...testsState]
+    const index =  newTestsState.findIndex(element => element.name === 'Blacklist')
+    newTestsState[index].params[0].value = newValue;
+    // send new level to server
+    setTestsState(newTestsState);
+  }
+
   // This renders the different test inputs and dropdows with its options
-  const renderTestConfig = (testDetails) => {
+  const renderTestConfig = (test) => {
+    console.log(test)
     return (
+      // Render the test's level select
+      <div className={classes.testOptionsContainer}>
       <FormControl variant="outlined" size="small">
         <InputLabel id="outlined-level-native-simple">Level</InputLabel>
         <Select
           labelId="outlined-level-native-simple"
-          value={testDetails.level}
-          onChange={event => handleChange(event, testDetails.name)}
+          value={test.level}
+          onChange={event => handleLevelChange(event, test.name)}
         >
           <MenuItem value='warning'>
             <div className={classes.menuItemContent}>
@@ -97,6 +110,20 @@ export const Attribute = ({ attributeData, tests }) => {
           </MenuItem>
         </Select>
       </FormControl>
+      {test.name === 'Blacklist'&& 
+              <TextField
+              id="outlined-multiline-static"
+              label="List of words"
+              multiline
+              rows={4}
+              value={test.params[0] &&
+                test.params[0].value.join(', ')
+              }
+              variant="outlined"
+              onChange={handleBlacklistChange}
+              />
+      }
+      </div>
     )
   }
 
@@ -123,7 +150,7 @@ export const Attribute = ({ attributeData, tests }) => {
               onToggleTest={e => toggleTestEnabled(e, test.name)}
               testDetails={test}
               key={`${attributeData.id}${test.id}`}
-              renderTestConfig={renderTestConfig}
+              renderTestConfig={() => renderTestConfig(test)}
             />
           )}
         </div>
