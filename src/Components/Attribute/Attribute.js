@@ -107,8 +107,13 @@ export const Attribute = ({ attributeData, tests }) => {
       // Render the test's level select
       <div className={classes.testOptionsContainer}>
         <FormControl variant="outlined" size="small">
-          <InputLabel id="outlined-level-native-simple">Level</InputLabel>
+          <InputLabel
+            htmlFor="warning-select"
+            id="outlined-level-native-simple">Level
+          </InputLabel>
           <Select
+            id="warning-select"
+            label="Level"
             labelId="outlined-level-native-simple"
             value={test.level}
             onChange={event => handleLevelChange(event, test.name)}
