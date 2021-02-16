@@ -1,5 +1,4 @@
 import React, { useRef, useState } from 'react';
-import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
@@ -125,8 +124,9 @@ export const Attribute = ({ attributeData, tests }) => {
   // This renders the different test inputs and dropdows with its options
   const renderTestConfig = (test) => {
     return (
-      // Render the test's level select
       <div className={classes.testOptionsContainer}>
+
+        {/* Render the test's level select */}
         <div className="warning-container">
         <FormControl variant="outlined" size="small" >
           <InputLabel
@@ -155,6 +155,7 @@ export const Attribute = ({ attributeData, tests }) => {
           </Select>
         </FormControl>
         </div>
+        {/* Render the text area if this is a blacklist test */}
         {test.name === 'Blacklist' &&
           <TextField
             id="outlined-multiline-static"
@@ -168,6 +169,8 @@ export const Attribute = ({ attributeData, tests }) => {
             onChange={handleBlacklistChange}
           />
         }
+
+        {/* Render the range inputs if this is a range test */}
         {test.name === 'Range' &&
           <div className={classes.rangeInputsContainer}>
             <TextField
@@ -193,6 +196,7 @@ export const Attribute = ({ attributeData, tests }) => {
             />
           </div>
         }
+
       </div>
     )
   }
@@ -207,7 +211,7 @@ export const Attribute = ({ attributeData, tests }) => {
             </IconButton>
             Теsts
           </div>
-          <div className={clsx(classes.descriptionContainer, classes.textContainer)}>
+          <div className={`${classes.descriptionContainer} ${classes.textContainer}`}>
             <div>
               {attributeData.name}
             </div>

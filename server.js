@@ -9,7 +9,7 @@ app.use(bodyParser.json());
 app.use(cors());
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
-// the "data" directory, containing the JSON data files
+// The "data" directory, containing the JSON data files
 const dataDir = `${__dirname}/data`;
 
 // Endpoints:
@@ -17,14 +17,14 @@ const dataDir = `${__dirname}/data`;
 // GET attributes
 app.get('/attributes', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/attributes.json`);
-  // imitate some latency
+  // Imitate some latency
   setTimeout(() => res.json(JSON.parse(data)), 500);
 });
 
 // GET tests
 app.get('/tests', async (req, res) => {
   const data = await fs.readFile(`${dataDir}/tests.json`);
-  // imitate some latency
+  // Imitate some latency
   setTimeout(() => res.json(JSON.parse(data)), 500);
 });
 
@@ -32,11 +32,11 @@ app.get('/tests', async (req, res) => {
 app.patch('/attributes/:id/', async (req, res) => {
   const testsState = req.body;
 
-  // read the mock db file
+  // Read the mock db file
   const file = await fs.readFile(`${dataDir}/attributes.json`);
   const fileObj = JSON.parse(file);
 
-  // find the attribute being updated
+  // Find the attribute being updated
   const index = fileObj.attributes.findIndex(attr => attr.id === req.params.id);
 
   const newTests = testsState.filter(test => test.enabled === true).map((test, i) => {

@@ -8,7 +8,7 @@ import WarningIcon from '@material-ui/icons/Warning';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import { useAccordionStyles } from './style';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 // Overriding Material UI's ugly pink checkbox :)
 const GreenCheckbox = withStyles({

@@ -9,7 +9,6 @@ export const useAccordionStyles = makeStyles({
         '& > span': {
             fontSize: '18px',
             fontWeight: 500,
-            //color: '#3e4345'
         }
     },
     warningIconContainer: {
