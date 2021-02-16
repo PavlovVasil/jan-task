@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -10,6 +10,7 @@ import FormControl from '@material-ui/core/FormControl';
 import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Select from '@material-ui/core/Select';
+import debounce from 'lodash.debounce';
 import { Test } from '../index'
 import { useCardStyles } from './styles';
 import PropTypes from 'prop-types';
@@ -56,20 +57,23 @@ export const Attribute = ({ attributeData, tests }) => {
 
   const [testsState, setTestsState] = useState(configuredTests);
 
-  const sendData = () => {
+  const sendData = (newTestsState) => {
     try {
       fetch(`http://localhost:3001/attributes/${attributeData.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(testsState)
+        body: JSON.stringify(newTestsState)
       })
      
     } catch (e) {
       console.log(e)
     }
   }
+
+  const debouncedSendData = useRef(debounce((newTestsState) => 
+  sendData(newTestsState), 500)).current;
 
   // When a test gets enabled/disabled
   const toggleTestEnabled = (e, testName) => {
@@ -78,7 +82,7 @@ export const Attribute = ({ attributeData, tests }) => {
     const index = newTestsState.findIndex(element => element.name === testName);
     newTestsState[index].enabled = !newTestsState[index].enabled;
     setTestsState(newTestsState);
-    sendData();
+    debouncedSendData(newTestsState);
   }
 
 
@@ -89,7 +93,7 @@ export const Attribute = ({ attributeData, tests }) => {
     const index = newTestsState.findIndex(element => element.name === testName);
     newTestsState[index].level = newValue;
     setTestsState(newTestsState);
-    sendData();
+    debouncedSendData(newTestsState);
   }
 
   // When something in the blacklist changes
@@ -99,6 +103,7 @@ export const Attribute = ({ attributeData, tests }) => {
     const index = newTestsState.findIndex(element => element.name === 'Blacklist');
     newTestsState[index].params[0].value = newValue;
     setTestsState(newTestsState);
+    debouncedSendData(newTestsState);
   }
 
   // When something in the range values changes
@@ -114,7 +119,7 @@ export const Attribute = ({ attributeData, tests }) => {
       newTestsState[index].params[1].error = hasError;
     }
     setTestsState(newTestsState);
-    sendData()
+    debouncedSendData(newTestsState);
   }
 
   // This renders the different test inputs and dropdows with its options
