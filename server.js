@@ -32,40 +32,50 @@ app.get('/tests', async (req, res) => {
 
 // Mock some CRUD operations
 app.patch('/attributes/:id/', async (req, res) => {
-  const updatedAttribute = {...req.body};
+  const testsState = req.body;
 
-  // read mock db file
+  // read the mock db file
   const file = await fs.readFile(`${dataDir}/attributes.json`);
   const fileObj = JSON.parse(file);
-  console.log(fileObj)
+
   // find the attribute
   const index = fileObj.attributes.findIndex(attr => attr.id === req.params.id);
-  const tests = fileObj.attributes[index].channels.tests;
+  // const tests = fileObj.attributes[index].channels[0].tests;
 
-  //search for the toggled test
-  const indexInTests = tests.findIndex(test => test.code === updatedAttribute.code);
-
-  if(indexInTests === -1){
-    tests.push({
-      "code": updatedAttribute.code,
-      "level": updatedAttribute.level,
-      "params": updatedAttribute.params
-    })
-  } else {
-    tests.splice(indexInTests, 1);
-  }
-  tests.forEach((test, i) => {
-    test.seq = i;
+  const newTests = testsState.filter(test => test.enabled === true).map((test, i) => {
+    return {
+      "seq": i,
+      "code": test.code,
+      "level": test.level,
+      "params": test.params
+    }
   })
 
+  fileObj.attributes[index].channels[0].tests = newTests;
 
-  fs.writeFile('attributes.json', JSON.stringify(fileObj), 'utf8', (err) => {
+  //search for the toggled test
+  //const indexInTests = tests.findIndex(test => test.code === updatedAttribute.code);
+
+  // if(indexInTests === -1){
+  //   tests.push({
+  //     "code": updatedAttribute.code,
+  //     "level": updatedAttribute.level,
+  //     "params": updatedAttribute.params
+  //   })
+  // } else {
+  //   tests.splice(indexInTests, 1);
+  // }
+  // tests.forEach((test, i) => {
+  //   test.seq = i;
+  // })
+
+  fs.writeFile(`${dataDir}/attributes.json`, JSON.stringify(fileObj), 'utf8', (err) => {
     if (err) {
-        console.log("An error occured while writing JSON Object to File.");
-        return console.log(err);
+      console.log("An error occured while writing JSON Object to File.");
+      return res.sendStatus(500)
     }
     console.log("JSON file has been saved.");
-});
+  });
   res.sendStatus(200)
 })
 

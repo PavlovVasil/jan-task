@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -56,21 +56,14 @@ export const Attribute = ({ attributeData, tests }) => {
 
   const [testsState, setTestsState] = useState(configuredTests);
 
-  // When a test gets enabled/disabled
-  const toggleTestEnabled = async (e, testName) => {
-    e.stopPropagation();
-    const newTestsState = [...testsState];
-    const index = newTestsState.findIndex(element => element.name === testName);
-    newTestsState[index].enabled = !newTestsState[index].enabled;
-    // send new test to server
-    setTestsState(newTestsState);
+  const sendData = () => {
     try {
       fetch(`http://localhost:3001/attributes/${attributeData.id}`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(newTestsState[index])
+        body: JSON.stringify(testsState)
       })
      
     } catch (e) {
@@ -78,14 +71,25 @@ export const Attribute = ({ attributeData, tests }) => {
     }
   }
 
+  // When a test gets enabled/disabled
+  const toggleTestEnabled = (e, testName) => {
+    e.stopPropagation();
+    const newTestsState = [...testsState];
+    const index = newTestsState.findIndex(element => element.name === testName);
+    newTestsState[index].enabled = !newTestsState[index].enabled;
+    setTestsState(newTestsState);
+    sendData();
+  }
+
+
   // When the test level changes
   const handleLevelChange = (event, testName) => {
     const newValue = event.target.value;
     const newTestsState = [...testsState];
     const index = newTestsState.findIndex(element => element.name === testName);
     newTestsState[index].level = newValue;
-    // send new level to server
     setTestsState(newTestsState);
+    sendData();
   }
 
   // When something in the blacklist changes
@@ -94,7 +98,6 @@ export const Attribute = ({ attributeData, tests }) => {
     const newTestsState = [...testsState];
     const index = newTestsState.findIndex(element => element.name === 'Blacklist');
     newTestsState[index].params[0].value = newValue;
-    // send new level to server
     setTestsState(newTestsState);
   }
 
@@ -110,9 +113,8 @@ export const Attribute = ({ attributeData, tests }) => {
         parseInt(newTestsState[index].params[1].value, 10);        
       newTestsState[index].params[1].error = hasError;
     }
-
-    // send new level to server
     setTestsState(newTestsState);
+    sendData()
   }
 
   // This renders the different test inputs and dropdows with its options
