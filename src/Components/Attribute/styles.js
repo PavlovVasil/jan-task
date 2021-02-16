@@ -55,10 +55,14 @@ export const useCardStyles = makeStyles((theme) => ({
       color: '#ff939a'
   },
   testOptionsContainer: {
+    width: '100%',
     display: 'flex',
     flexDirection: 'column',
     '& > div': {
       marginBottom: '24px',
+    },
+    '& .warning-container': {
+      width: '85%'
     }
   },
   rangeInputsContainer: {

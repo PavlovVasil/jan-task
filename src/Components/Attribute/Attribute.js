@@ -57,13 +57,25 @@ export const Attribute = ({ attributeData, tests }) => {
   const [testsState, setTestsState] = useState(configuredTests);
 
   // When a test gets enabled/disabled
-  const toggleTestEnabled = (e, testName) => {
+  const toggleTestEnabled = async (e, testName) => {
     e.stopPropagation();
     const newTestsState = [...testsState];
     const index = newTestsState.findIndex(element => element.name === testName);
     newTestsState[index].enabled = !newTestsState[index].enabled;
     // send new test to server
     setTestsState(newTestsState);
+    try {
+      fetch(`http://localhost:3001/attributes/${attributeData.id}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(newTestsState[index])
+      })
+     
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   // When the test level changes
@@ -76,6 +88,7 @@ export const Attribute = ({ attributeData, tests }) => {
     setTestsState(newTestsState);
   }
 
+  // When something in the blacklist changes
   const handleBlacklistChange = (event) => {
     const newValue = event.target.value.split(', ');
     const newTestsState = [...testsState];
@@ -85,6 +98,7 @@ export const Attribute = ({ attributeData, tests }) => {
     setTestsState(newTestsState);
   }
 
+  // When something in the range values changes
   const handleRangeChange = (event, type) => {
     const newValue = parseInt(event.target.value, 10);
     const newTestsState = [...testsState];
@@ -106,7 +120,8 @@ export const Attribute = ({ attributeData, tests }) => {
     return (
       // Render the test's level select
       <div className={classes.testOptionsContainer}>
-        <FormControl variant="outlined" size="small">
+        <div className="warning-container">
+        <FormControl variant="outlined" size="small" >
           <InputLabel
             htmlFor="warning-select"
             id="outlined-level-native-simple">Level
@@ -132,6 +147,7 @@ export const Attribute = ({ attributeData, tests }) => {
             </MenuItem>
           </Select>
         </FormControl>
+        </div>
         {test.name === 'Blacklist' &&
           <TextField
             id="outlined-multiline-static"

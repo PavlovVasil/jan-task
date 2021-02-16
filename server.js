@@ -31,9 +31,43 @@ app.get('/tests', async (req, res) => {
 });
 
 // Mock some CRUD operations
-// app.delete('/companies/:id/projects/:id', (req, res) => {
-//   res.sendStatus(200)
-// })
+app.patch('/attributes/:id/', async (req, res) => {
+  const updatedAttribute = {...req.body};
+
+  // read mock db file
+  const file = await fs.readFile(`${dataDir}/attributes.json`);
+  const fileObj = JSON.parse(file);
+  console.log(fileObj)
+  // find the attribute
+  const index = fileObj.attributes.findIndex(attr => attr.id === req.params.id);
+  const tests = fileObj.attributes[index].channels.tests;
+
+  //search for the toggled test
+  const indexInTests = tests.findIndex(test => test.code === updatedAttribute.code);
+
+  if(indexInTests === -1){
+    tests.push({
+      "code": updatedAttribute.code,
+      "level": updatedAttribute.level,
+      "params": updatedAttribute.params
+    })
+  } else {
+    tests.splice(indexInTests, 1);
+  }
+  tests.forEach((test, i) => {
+    test.seq = i;
+  })
+
+
+  fs.writeFile('attributes.json', JSON.stringify(fileObj), 'utf8', (err) => {
+    if (err) {
+        console.log("An error occured while writing JSON Object to File.");
+        return console.log(err);
+    }
+    console.log("JSON file has been saved.");
+});
+  res.sendStatus(200)
+})
 
 // app.patch('/companies/:id/projects/:id', (req, res) => {
 //   res.sendStatus(200)
